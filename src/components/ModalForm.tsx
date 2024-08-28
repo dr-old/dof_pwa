@@ -8,7 +8,7 @@ import { FormContainer } from "react-hook-form-mui";
 import { Stack } from "@mui/material";
 import { hexToRgba } from "../utils/helpers";
 import { useMutation } from "@tanstack/react-query";
-import { createUser } from "../services/userService";
+import { createUser, updateUser } from "../services/userService";
 import { useSnackbar } from "notistack";
 
 const style = {
@@ -31,10 +31,13 @@ interface FormField {
 }
 
 interface ModalFormProps {
+  id?: string;
+  data?: any;
   title: string;
   fields: FormField[];
   submitButtonText: string;
-  openButtonText: string;
+  open: boolean;
+  setOpen: any;
   titleIcon?: React.ReactNode; // Icon in title
   titleColor?: string; // Color in title
   successButtonIcon?: React.ReactNode; // Icon in success button
@@ -42,25 +45,27 @@ interface ModalFormProps {
 }
 
 export default function ModalForm({
+  id,
+  data,
   title,
   fields,
   submitButtonText,
-  openButtonText,
+  open,
+  setOpen,
   titleIcon,
   titleColor = "primary.main", // Default color
   successButtonIcon,
   refetch,
 }: ModalFormProps) {
   const { enqueueSnackbar } = useSnackbar();
-  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(Boolean);
 
   const mutation = useMutation({
-    mutationFn: createUser,
-    onSuccess: (data) => {
-      console.log("success", data);
+    mutationFn: id ? updateUser : createUser,
+    onSuccess: (res: any) => {
+      console.log("success", res);
       // variant could be success, error, warning, info, or default
-      enqueueSnackbar(data.message, { variant: "success" });
+      enqueueSnackbar(res.message, { variant: id ? "info" : "success" });
       refetch.invalidateQueries({ queryKey: ["users"] });
       handleClose();
     },
@@ -77,24 +82,22 @@ export default function ModalForm({
   });
 
   const onSubmit = (data: any) => {
-    console.log("data", data);
     mutation.mutate({ data });
   };
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const onUpdate = (data: any) => {
+    mutation.mutate({
+      data,
+      id,
+    });
+  };
+
+  const handleClose = () => {
+    setOpen();
+  };
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleOpen}
-        sx={{ textTransform: "capitalize", borderRadius: 2, mb: 2 }}>
-        <Typography variant="caption" component="button">
-          {openButtonText}
-        </Typography>
-      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -127,14 +130,14 @@ export default function ModalForm({
           </Typography>
           <FormContainer
             defaultValues={{
-              fullname: "",
-              birthday: "",
-              email: "",
+              fullname: data?.fullname || "",
+              birthday: data?.birthday || "",
+              email: data?.email || "",
               password: "",
-              phone: "",
-              photo: "",
+              phone: data?.phone || "",
+              photo: data?.photo || "",
             }}
-            onSuccess={onSubmit}>
+            onSuccess={id ? onUpdate : onSubmit}>
             <Stack
               spacing={{ xs: 1, sm: 2 }}
               direction="row"
@@ -158,7 +161,7 @@ export default function ModalForm({
             </Stack>
             <Button
               variant="contained"
-              color="success" // Apply color for success button
+              color={id ? "info" : "success"}
               sx={{
                 textTransform: "capitalize",
                 borderRadius: 2,

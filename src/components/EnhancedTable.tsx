@@ -19,15 +19,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import moment from "moment";
-import { Avatar, Stack } from "@mui/material";
+import { Avatar, Stack, useTheme } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { deleteUsers } from "../services/userService";
 import AlertDialog from "./AlertDialog";
+import { BorderColorRounded } from "@mui/icons-material";
+import ModalForm from "./ModalForm";
 
 export interface Data {
   id: string;
-  name: string;
+  fullname: string;
   photo: string;
   email: string;
   phone: string;
@@ -67,7 +69,7 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
   {
-    id: "name",
+    id: "fullname",
     numeric: false,
     disablePadding: true,
     label: "Detail",
@@ -161,13 +163,25 @@ interface EnhancedTableToolbarProps {
   selected: string[];
   refetch: any;
   setSelected: any;
+  rows?: Data[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, refetch } = props;
+  const theme = useTheme();
+  const { numSelected, selected, setSelected, refetch, rows } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = React.useState(Boolean);
   const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelected([]);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -176,6 +190,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const handleClose = () => {
     setOpen(false);
   };
+
   const mutation = useMutation({
     mutationFn: deleteUsers,
     onSuccess: (data) => {
@@ -203,6 +218,19 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const onSubmit = () => {
     mutation.mutate(selected);
   };
+
+  const dataUser = React.useMemo(() => {
+    return rows?.find((i) => i.id === selected[0]);
+  }, [selected, rows]);
+
+  const userFields = [
+    { label: "Full Name", name: "fullname", halfWidth: false },
+    { label: "Birthday", name: "birthday", type: "date", halfWidth: false },
+    { label: "Email", name: "email", type: "email", halfWidth: true },
+    { label: "Password", name: "password", type: "password", halfWidth: true },
+    { label: "Phone", name: "phone", halfWidth: true },
+    { label: "Photo URL", name: "photo", halfWidth: true },
+  ];
 
   return (
     <>
@@ -241,11 +269,20 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         )}
 
         {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton onClick={handleOpen}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+          <>
+            {numSelected === 1 && (
+              <Tooltip title="Edit">
+                <IconButton onClick={handleOpenModal}>
+                  <BorderColorRounded />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Delete">
+              <IconButton onClick={handleOpen}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </>
         ) : (
           <Tooltip title="Filter list">
             <IconButton>
@@ -254,15 +291,31 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </Tooltip>
         )}
       </Toolbar>
-      <AlertDialog
-        open={open}
-        onClose={handleClose}
-        title="Confirm Delete"
-        content={`Are you sure you want to delete the selected user? This action cannot be undone.`}
-        onConfirm={onSubmit} // Replace onSubmit with your delete handler function
-        confirmText="Delete"
-        cancelText="Cancel"
-      />
+      {open && (
+        <AlertDialog
+          open={open}
+          onClose={handleClose}
+          title="Confirm Delete"
+          content={`Are you sure you want to delete the selected user? This action cannot be undone.`}
+          onConfirm={onSubmit} // Replace onSubmit with your delete handler function
+          confirmText="Delete"
+          cancelText="Cancel"
+        />
+      )}
+      {openModal && (
+        <ModalForm
+          title="Update User"
+          titleIcon={<BorderColorRounded fontSize="small" />}
+          titleColor={theme.palette.info.main}
+          fields={userFields}
+          submitButtonText="Update User"
+          refetch={refetch}
+          open={openModal}
+          setOpen={handleCloseModal}
+          data={dataUser}
+          id={selected[0]}
+        />
+      )}
     </>
   );
 }
@@ -274,7 +327,7 @@ interface EnhancedTableProps {
 
 export default function EnhancedTable({ rows, refetch }: EnhancedTableProps) {
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("fullname");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -341,129 +394,127 @@ export default function EnhancedTable({ rows, refetch }: EnhancedTableProps) {
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [rows, order, orderBy, page, rowsPerPage]
   );
-
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2, borderRadius: 5 }}>
-        <EnhancedTableToolbar
-          refetch={refetch}
-          selected={selected}
-          numSelected={selected.length}
-          setSelected={setSelected}
-        />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={"medium"}>
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+    <Paper sx={{ width: "100%", mb: 2, borderRadius: 5 }}>
+      <EnhancedTableToolbar
+        refetch={refetch}
+        selected={selected}
+        numSelected={selected.length}
+        setSelected={setSelected}
+        rows={rows}
+      />
+      <TableContainer>
+        <Table
+          sx={{ minWidth: 750 }}
+          aria-labelledby="tableTitle"
+          size={"medium"}>
+          <EnhancedTableHead
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={rows.length}
+          />
+          <TableBody>
+            {visibleRows.map((row, index) => {
+              const isItemSelected = isSelected(row.id);
+              const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none">
-                      <Stack direction="row" spacing={2}>
-                        <Avatar
-                          alt={row.name}
-                          src={row.photo || "/static/images/avatar/1.jpg"}
-                        />
-                        <Typography
-                          variant="caption"
-                          sx={{ display: "flex", flexDirection: "column" }}>
-                          <Typography variant="caption" fontWeight={500}>
-                            {row.name}
-                          </Typography>
-                          <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                            Updated: {moment(row.updatedAt).fromNow()}
-                          </Typography>
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography
-                        variant="caption"
-                        sx={{ display: "flex", flexDirection: "column" }}>
-                        <Typography variant="caption" fontWeight={500}>
-                          {row.email || ""}
-                        </Typography>
-                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                          {row.phone || ""}
-                        </Typography>
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography variant="caption" fontWeight={500}>
-                        {row.birthday &&
-                          moment(row.birthday).format("MMMM D, YYYY")}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography
-                        variant="caption"
-                        sx={{ display: "flex", flexDirection: "column" }}>
-                        <Typography variant="caption" fontWeight={500}>
-                          {moment(row.createdAt).format("MMMM D, YYYY")}
-                        </Typography>
-                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                          {moment(row.createdAt).format("h:mm A")}
-                        </Typography>
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
+              return (
                 <TableRow
-                  style={{
-                    height: 53 * emptyRows,
-                  }}>
-                  <TableCell colSpan={6} />
+                  hover
+                  onClick={(event) => handleClick(event, row.id)}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  key={row.id}
+                  selected={isItemSelected}
+                  sx={{ cursor: "pointer" }}>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      checked={isItemSelected}
+                      inputProps={{
+                        "aria-labelledby": labelId,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell
+                    component="th"
+                    id={labelId}
+                    scope="row"
+                    padding="none">
+                    <Stack direction="row" spacing={2}>
+                      <Avatar
+                        alt={row.fullname}
+                        src={row.photo || "/static/images/avatar/1.jpg"}
+                      />
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "flex", flexDirection: "column" }}>
+                        <Typography variant="caption" fontWeight={500}>
+                          {row.fullname}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                          Updated: {moment(row.updatedAt).fromNow()}
+                        </Typography>
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography
+                      variant="caption"
+                      sx={{ display: "flex", flexDirection: "column" }}>
+                      <Typography variant="caption" fontWeight={500}>
+                        {row.email || ""}
+                      </Typography>
+                      <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                        {row.phone || ""}
+                      </Typography>
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography variant="caption" fontWeight={500}>
+                      {row.birthday &&
+                        moment(row.birthday).format("MMMM D, YYYY")}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography
+                      variant="caption"
+                      sx={{ display: "flex", flexDirection: "column" }}>
+                      <Typography variant="caption" fontWeight={500}>
+                        {moment(row.createdAt).format("MMMM D, YYYY")}
+                      </Typography>
+                      <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                        {moment(row.createdAt).format("h:mm A")}
+                      </Typography>
+                    </Typography>
+                  </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+              );
+            })}
+            {emptyRows > 0 && (
+              <TableRow
+                style={{
+                  height: 53 * emptyRows,
+                }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

@@ -80,6 +80,22 @@ export const getUsers = async (): Promise<Person[]> => {
   }
 };
 
+// Get Users
+export const getUser = async (id?: string) => {
+  console.log("id", id);
+
+  try {
+    const response = await instance.get(`/person/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch user:", error);
+    throw new Error(
+      error.response?.data?.error ||
+        "An error occurred while trying to fetch user."
+    );
+  }
+};
+
 // Create User
 export const createUser = async ({ data }: { data?: any }) => {
   try {
@@ -91,6 +107,22 @@ export const createUser = async ({ data }: { data?: any }) => {
       error.response?.data?.error ||
         error.response?.data?.message ||
         "An error occurred while creating the user."
+    );
+  }
+};
+
+export const updateUser = async ({ data, id }: { data?: any; id?: string }) => {
+  console.log(id, data);
+
+  try {
+    const response = await instance.put(`/person/${id}`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to update the user:", error);
+    throw new Error(
+      error.response?.data?.error ||
+        error.response?.data?.message ||
+        "An error occurred while updating the user."
     );
   }
 };

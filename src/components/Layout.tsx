@@ -10,8 +10,8 @@ import {
 import React from "react";
 import AppBar from "./AppBar";
 import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
-import ListMenu from "./ListMenu";
 import { Outlet } from "react-router-dom";
+import ListMenu from "./ListMenu";
 
 const drawerWidth = 240;
 
@@ -85,7 +85,7 @@ const Layout: React.FC = () => {
           {isMobile ? (
             <Drawer
               sx={{
-                width: drawerWidth,
+                // width: drawerWidth,
                 flexShrink: 0,
                 "& .MuiDrawer-paper": {
                   width: drawerWidth,

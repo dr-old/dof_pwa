@@ -12,6 +12,7 @@ import {
   Typography,
   Button,
   Switch,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { EditRounded, ExitToAppRounded } from "@mui/icons-material";
@@ -80,6 +81,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const ListMenu: React.FC = () => {
   const { logOut } = useAuth();
+  const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
@@ -144,6 +146,15 @@ const ListMenu: React.FC = () => {
           alignItems: "center",
           padding: 2,
         }}>
+        <Typography
+          variant="h5"
+          color={
+            theme.palette.mode === "dark" ? "warning.main" : "primary.main"
+          }
+          fontWeight={600}
+          sx={{ mb: 5 }}>
+          DOF
+        </Typography>
         <Avatar
           src="https://i.pravatar.cc/150?img=2" // Replace with actual image URL
           alt="User Image"
