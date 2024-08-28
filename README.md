@@ -18,11 +18,11 @@ Make sure you have the following installed:
 ### Installation
 1. Clone the repo
 ```sh
-git clone https://github.com/dr-old/dashboard_pwa
+git clone https://github.com/dr-old/dof_pwa
 ```
 2. Navigate to the project directory
 ```sh
-cd dashboard_pwa
+cd dof_pwa
 ```
 3. Install dependencies yarn or npm
 ```sh
