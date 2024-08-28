@@ -119,18 +119,12 @@ const BorderlessPassword = styled(PasswordElement)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius * 2.5,
     backgroundColor: theme.palette.background.paper,
     "& fieldset": {
-      // borderWidth: 1,
-      // borderColor: theme.palette.divider,
       border: "none",
     },
     "&:hover fieldset": {
-      // borderWidth: 1,
-      // borderColor: theme.palette.divider,
       border: "none",
     },
     "&.Mui-focused fieldset": {
-      // borderWidth: 1,
-      // borderColor: theme.palette.divider,
       border: "none",
     },
     "& input": {

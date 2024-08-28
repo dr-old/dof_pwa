@@ -79,3 +79,48 @@ export const getUsers = async (): Promise<Person[]> => {
     );
   }
 };
+
+// Create User
+export const createUser = async ({ data }: { data?: any }) => {
+  try {
+    const response = await instance.post(`/person`, data);
+    return response.data;
+  } catch (error: any) {
+    console.log("Failed to create the user:", error);
+    throw new Error(
+      error.response?.data?.error ||
+        error.response?.data?.message ||
+        "An error occurred while creating the user."
+    );
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    const response = await instance.delete(`/person/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to delete the user:", error);
+    throw new Error(
+      error.response?.data?.error ||
+        error.response?.data?.message ||
+        "An error occurred while deleting the user."
+    );
+  }
+};
+
+// Delete all users
+export const deleteUsers = async (ids: string[]) => {
+  for (const id of ids) {
+    try {
+      if (id) {
+        await deleteUser(id);
+        console.log(`Successfully deleted user for ${id}`);
+      } else {
+        console.warn(`No user found for ${id}`);
+      }
+    } catch (error: any) {
+      console.log(`Failed to delete user for ${id}:`, error);
+    }
+  }
+};
