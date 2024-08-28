@@ -9,6 +9,7 @@ import { login } from "../services/userService";
 import LayoutAuth from "../components/LayoutAuth";
 import ToggleTheme from "../components/ToggleTheme";
 import { useSnackbar } from "notistack";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 interface FormValues {
   email: string;
@@ -50,6 +51,8 @@ const Login: React.FC = () => {
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data);
   };
+
+  if (isLoading) return <ActivityIndicator fullScreen={true} />;
 
   return (
     <LayoutAuth>
