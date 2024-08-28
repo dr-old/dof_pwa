@@ -93,11 +93,11 @@ export default function ModalForm({
     });
   };
 
-  if (isLoading) return <ActivityIndicator fullScreen={true} />;
-
   const handleClose = () => {
     setOpen();
   };
+
+  if (isLoading) return <ActivityIndicator fullScreen={true} />;
 
   return (
     <div>
