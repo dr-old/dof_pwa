@@ -4,12 +4,11 @@ import { Input } from "../components/Form";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { FormContainer } from "react-hook-form-mui";
 import { useAuth } from "../context/useAuth";
-import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../services/userService";
 import LayoutAuth from "../components/LayoutAuth";
-import { useColorMode } from "../context/useColorMode";
 import ToggleTheme from "../components/ToggleTheme";
+import { useSnackbar } from "notistack";
 
 interface FormValues {
   email: string;
@@ -19,8 +18,7 @@ interface FormValues {
 const Login: React.FC = () => {
   const theme = useTheme();
   const auth = useAuth();
-  const { toggleColorMode } = useColorMode();
-  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setLoading] = useState<boolean>(false);
   const color =
     theme.palette.mode === "light"
@@ -33,16 +31,13 @@ const Login: React.FC = () => {
       console.log("Login successful:", data);
       localStorage.setItem("token", data.token);
       auth.loginAction(data);
-      // toast.success("Login successful!");
+      enqueueSnackbar("Login successful", { variant: "success" });
     },
     onError: (error: any) => {
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || error.message
-      );
-      // toast.error(
-      //   "Login failed: " + error.response?.data?.message || error.message
-      // );
+      console.log(error.message);
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
     },
     onMutate: () => {
       setLoading(true);
