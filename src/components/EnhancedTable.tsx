@@ -220,8 +220,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     mutation.mutate(selected);
   };
 
-  if (isLoading) return <ActivityIndicator fullScreen={true} />;
-
   const dataUser = React.useMemo(() => {
     return rows?.find((i) => i.id === selected[0]);
   }, [selected, rows]);
@@ -234,6 +232,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     { label: "Phone", name: "phone", halfWidth: true },
     { label: "Photo URL", name: "photo", halfWidth: true },
   ];
+
+  if (isLoading) return <ActivityIndicator fullScreen={true} />;
 
   return (
     <>
