@@ -10,6 +10,7 @@ import { hexToRgba } from "../utils/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { createUser, updateUser } from "../services/userService";
 import { useSnackbar } from "notistack";
+import ActivityIndicator from "./ActivityIndicator";
 
 const style = {
   position: "absolute",
@@ -58,7 +59,7 @@ export default function ModalForm({
   refetch,
 }: ModalFormProps) {
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = React.useState(Boolean);
+  const [isLoading, setLoading] = React.useState(Boolean);
 
   const mutation = useMutation({
     mutationFn: id ? updateUser : createUser,
@@ -91,6 +92,8 @@ export default function ModalForm({
       id,
     });
   };
+
+  if (isLoading) return <ActivityIndicator fullScreen={true} />;
 
   const handleClose = () => {
     setOpen();

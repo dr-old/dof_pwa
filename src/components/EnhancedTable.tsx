@@ -26,6 +26,7 @@ import { deleteUsers } from "../services/userService";
 import AlertDialog from "./AlertDialog";
 import { BorderColorRounded } from "@mui/icons-material";
 import ModalForm from "./ModalForm";
+import ActivityIndicator from "./ActivityIndicator";
 
 export interface Data {
   id: string;
@@ -170,7 +171,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const theme = useTheme();
   const { numSelected, selected, setSelected, refetch, rows } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = React.useState(Boolean);
+  const [isLoading, setLoading] = React.useState(Boolean);
   const [open, setOpen] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
 
@@ -231,6 +232,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     { label: "Phone", name: "phone", halfWidth: true },
     { label: "Photo URL", name: "photo", halfWidth: true },
   ];
+
+  if (isLoading) return <ActivityIndicator fullScreen={true} />;
 
   return (
     <>
