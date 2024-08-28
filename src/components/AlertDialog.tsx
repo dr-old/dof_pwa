@@ -36,7 +36,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
       aria-describedby="alert-dialog-description"
       PaperProps={{
         sx: {
-          borderRadius: theme.shape.borderRadius * 1.5, // Customize border radius
+          borderRadius: theme.shape.borderRadius * 1, // Customize border radius
         },
       }}>
       <DialogTitle

@@ -18,42 +18,23 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import moment from "moment";
+import { Avatar, Stack } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { useSnackbar } from "notistack";
+import { deleteUsers } from "../services/userService";
+import AlertDialog from "./AlertDialog";
 
-interface Data {
-  id: number;
+export interface Data {
+  id: string;
   name: string;
-  calories: number;
-  fat: number;
-  carbs: number;
-  protein: number;
+  photo: string;
+  email: string;
+  phone: string;
+  birthday: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-function createData(
-  id: number,
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-): Data {
-  return { id, name, calories, fat, carbs, protein };
-}
-
-const rows: Data[] = [
-  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-  createData(2, "Donut", 452, 25.0, 51, 4.9),
-  createData(3, "Eclair", 262, 16.0, 24, 6.0),
-  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-  createData(9, "KitKat", 518, 26.0, 65, 7.0),
-  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-  createData(11, "Marshmallow", 318, 0, 81, 2.0),
-  createData(12, "Nougat", 360, 19.0, 9, 37.0),
-  createData(13, "Oreo", 437, 18.0, 63, 4.0),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,8 +50,8 @@ function getComparator<Key extends keyof any>(
   order: "asc" | "desc",
   orderBy: Key
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
+  a: { [key in Key]: number | string | Date },
+  b: { [key in Key]: number | string | Date }
 ) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -89,31 +70,25 @@ const headCells: HeadCell[] = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Dessert (100g serving)",
+    label: "Detail",
   },
   {
-    id: "calories",
-    numeric: true,
+    id: "email",
+    numeric: false,
     disablePadding: false,
-    label: "Calories",
+    label: "Contact",
   },
   {
-    id: "fat",
-    numeric: true,
+    id: "birthday",
+    numeric: false,
     disablePadding: false,
-    label: "Fat (g)",
+    label: "Birthday",
   },
   {
-    id: "carbs",
-    numeric: true,
+    id: "createdAt",
+    numeric: false,
     disablePadding: false,
-    label: "Carbs (g)",
-  },
-  {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Protein (g)",
+    label: "Date",
   },
 ];
 
@@ -153,7 +128,7 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              "aria-label": "select all desserts",
+              "aria-label": "select all users",
             }}
           />
         </TableCell>
@@ -183,67 +158,125 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  selected: string[];
+  refetch: any;
+  setSelected: any;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, selected, setSelected, refetch } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = React.useState(Boolean);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const mutation = useMutation({
+    mutationFn: deleteUsers,
+    onSuccess: (data) => {
+      console.log("success", data);
+      // variant could be success, error, warning, info, or default
+      enqueueSnackbar("Successfully deleted users selected", {
+        variant: "success",
+      });
+      refetch.invalidateQueries({ queryKey: ["users"] });
+      setSelected([]);
+      handleClose();
+    },
+    onError: (error: any) => {
+      console.log(error);
+      enqueueSnackbar(error.message, { variant: "error" });
+    },
+    onMutate: () => {
+      setLoading(true);
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+
+  const onSubmit = () => {
+    mutation.mutate(selected);
+  };
 
   return (
-    <Toolbar
-      sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        },
-      ]}>
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div">
-          Nutrition
-        </Typography>
-      )}
+    <>
+      <Toolbar
+        sx={[
+          {
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 },
+          },
+          numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.activatedOpacity
+              ),
+          },
+        ]}>
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div">
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <>
+            <Typography
+              sx={{ flex: "1 1 100%" }}
+              variant="h6"
+              id="tableTitle"
+              component="div">
+              User Information
+            </Typography>
+          </>
+        )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
+        {numSelected > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton onClick={handleOpen}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+      <AlertDialog
+        open={open}
+        onClose={handleClose}
+        title="Confirm Delete"
+        content={`Are you sure you want to delete the selected user? This action cannot be undone.`}
+        onConfirm={onSubmit} // Replace onSubmit with your delete handler function
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
+    </>
   );
 }
 
-export default function EnhancedTable() {
+interface EnhancedTableProps {
+  rows: Data[];
+  refetch?: any;
+}
+
+export default function EnhancedTable({ rows, refetch }: EnhancedTableProps) {
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
-  const [selected, setSelected] = React.useState<number[]>([]);
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
+  const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
@@ -264,9 +297,9 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected: number[] = [];
+    let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -295,11 +328,7 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -310,18 +339,23 @@ export default function EnhancedTable() {
         .slice()
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
+    [rows, order, orderBy, page, rowsPerPage]
   );
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2, borderRadius: 5 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          refetch={refetch}
+          selected={selected}
+          numSelected={selected.length}
+          setSelected={setSelected}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}>
+            size={"medium"}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -359,19 +393,60 @@ export default function EnhancedTable() {
                       id={labelId}
                       scope="row"
                       padding="none">
-                      {row.name}
+                      <Stack direction="row" spacing={2}>
+                        <Avatar
+                          alt={row.name}
+                          src={row.photo || "/static/images/avatar/1.jpg"}
+                        />
+                        <Typography
+                          variant="caption"
+                          sx={{ display: "flex", flexDirection: "column" }}>
+                          <Typography variant="caption" fontWeight={500}>
+                            {row.name}
+                          </Typography>
+                          <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                            Updated: {moment(row.updatedAt).fromNow()}
+                          </Typography>
+                        </Typography>
+                      </Stack>
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="left">
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "flex", flexDirection: "column" }}>
+                        <Typography variant="caption" fontWeight={500}>
+                          {row.email || ""}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                          {row.phone || ""}
+                        </Typography>
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography variant="caption" fontWeight={500}>
+                        {row.birthday &&
+                          moment(row.birthday).format("MMMM D, YYYY")}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "flex", flexDirection: "column" }}>
+                        <Typography variant="caption" fontWeight={500}>
+                          {moment(row.createdAt).format("MMMM D, YYYY")}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                          {moment(row.createdAt).format("h:mm A")}
+                        </Typography>
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 );
               })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}>
                   <TableCell colSpan={6} />
                 </TableRow>
@@ -389,10 +464,6 @@ export default function EnhancedTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
     </Box>
   );
 }

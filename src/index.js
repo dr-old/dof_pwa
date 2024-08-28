@@ -11,6 +11,7 @@ import "@fontsource/poppins/600.css";
 import "@fontsource/poppins/700.css";
 import { ColorModeProvider } from "./context/useColorMode";
 import "./tailwind.css";
+import { SnackbarProvider } from "notistack";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <LoadingProvider>
         <ColorModeProvider>
-          <App />
+          <SnackbarProvider maxSnack={3}>
+            <App />
+          </SnackbarProvider>
         </ColorModeProvider>
       </LoadingProvider>
     </QueryClientProvider>

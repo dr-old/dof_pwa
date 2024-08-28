@@ -52,36 +52,6 @@ const Dashboard = () => {
         { x: "C", y: 9 },
       ],
     },
-    {
-      title: "Chart 4",
-      backgroundColor: theme.palette.background.paper,
-      comp: <ArcDesign />,
-      data: [
-        { x: "A", y: 5 },
-        { x: "B", y: 3 },
-        { x: "C", y: 6 },
-      ],
-    },
-    {
-      title: "Chart 5",
-      backgroundColor: theme.palette.secondary.main,
-      comp: <ArcDesign />,
-      data: [
-        { x: "A", y: 4 },
-        { x: "B", y: 7 },
-        { x: "C", y: 1 },
-      ],
-    },
-    {
-      title: "Chart 6",
-      backgroundColor: theme.palette.background.paper,
-      comp: <ArcDesign />,
-      data: [
-        { x: "A", y: 6 },
-        { x: "B", y: 2 },
-        { x: "C", y: 8 },
-      ],
-    },
   ];
 
   return (
