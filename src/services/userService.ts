@@ -37,7 +37,9 @@ export const login = async (credentials: {
   } catch (error: any) {
     console.error("Failed to login:", error);
     throw new Error(
-      error.response?.data?.error || "An error occurred while trying to login."
+      error.response?.data?.error ||
+        error.response?.data?.message ||
+        "An error occurred while trying to login."
     );
   }
 };
