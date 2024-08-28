@@ -4,12 +4,15 @@ import { getUsers } from "../services/userService";
 import ModalForm from "../components/ModalForm";
 import ActivityIndicator from "../components/ActivityIndicator";
 import { CreateRounded } from "@mui/icons-material";
-import { useTheme } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 import { useAuth } from "../context/useAuth";
+import { useState } from "react";
 
 const Activity = () => {
   const theme = useTheme();
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const client = useQueryClient();
   const {
     data: users,
     isLoading,
@@ -19,9 +22,11 @@ const Activity = () => {
     queryFn: getUsers,
   });
 
+  const handleOpen = () => setOpen(true);
+
   function createData(
     id: string,
-    name: string,
+    fullname: string,
     photo: string,
     email: string,
     phone: string,
@@ -29,10 +34,19 @@ const Activity = () => {
     createdAt: Date,
     updatedAt: Date
   ): Data {
-    return { id, name, photo, email, phone, birthday, createdAt, updatedAt };
+    return {
+      id,
+      fullname,
+      photo,
+      email,
+      phone,
+      birthday,
+      createdAt,
+      updatedAt,
+    };
   }
-  const client = useQueryClient();
-  if (isLoading) return <ActivityIndicator fullScreen={true} />;
+
+  if (isLoading || error) return <ActivityIndicator fullScreen={true} />;
 
   const rows: Data[] =
     users?.data?.length > 0
@@ -63,6 +77,16 @@ const Activity = () => {
 
   return (
     <>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={handleOpen}
+        sx={{ textTransform: "capitalize", borderRadius: 2, mb: 2 }}>
+        <Typography variant="caption" component="button">
+          New User
+        </Typography>
+      </Button>
+      <EnhancedTable rows={rows} refetch={client} />
       <ModalForm
         title="Create User"
         titleIcon={<CreateRounded fontSize="small" />}
@@ -70,9 +94,9 @@ const Activity = () => {
         fields={userFields}
         submitButtonText="Create User"
         refetch={client}
-        openButtonText="New User"
+        open={open}
+        setOpen={setOpen}
       />
-      <EnhancedTable rows={rows} refetch={client} />
     </>
   );
 };
