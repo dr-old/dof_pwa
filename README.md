@@ -18,7 +18,7 @@ Make sure you have the following installed:
 ### Installation
 1. Clone the repo
 ```sh
-git clone https://github.com/dr-old/dof_pwa
+https://github.com/dr-old/dof_pwa.git
 ```
 2. Navigate to the project directory
 ```sh
