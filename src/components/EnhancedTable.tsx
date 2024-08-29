@@ -11,7 +11,6 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -19,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import moment from "moment";
-import { Avatar, Stack, useTheme } from "@mui/material";
+import { Avatar, Card, Stack, useTheme } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { deleteUsers } from "../services/userService";
@@ -329,6 +328,7 @@ interface EnhancedTableProps {
 }
 
 export default function EnhancedTable({ rows, refetch }: EnhancedTableProps) {
+  const theme = useTheme();
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("fullname");
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -398,126 +398,128 @@ export default function EnhancedTable({ rows, refetch }: EnhancedTableProps) {
     [rows, order, orderBy, page, rowsPerPage]
   );
   return (
-    <Paper sx={{ width: "100%", mb: 2, borderRadius: 5 }}>
-      <EnhancedTableToolbar
-        refetch={refetch}
-        selected={selected}
-        numSelected={selected.length}
-        setSelected={setSelected}
-        rows={rows}
-      />
-      <TableContainer>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size={"medium"}>
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-          />
-          <TableBody>
-            {visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.id);
-              const labelId = `enhanced-table-checkbox-${index}`;
+    <Card sx={{ borderRadius: theme.shape.borderRadius * 1.5 }}>
+      <Box sx={{ overflowX: "auto" }}>
+        <EnhancedTableToolbar
+          refetch={refetch}
+          selected={selected}
+          numSelected={selected.length}
+          setSelected={setSelected}
+          rows={rows}
+        />
+        <TableContainer>
+          <Table
+            sx={{ minWidth: "800px" }}
+            aria-labelledby="tableTitle"
+            size={"medium"}>
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {visibleRows.map((row, index) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, row.id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.id}
-                  selected={isItemSelected}
-                  sx={{ cursor: "pointer" }}>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none">
-                    <Stack direction="row" spacing={2}>
-                      <Avatar
-                        alt={row.fullname}
-                        src={row.photo || "/static/images/avatar/1.jpg"}
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                    sx={{ cursor: "pointer" }}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
                       />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none">
+                      <Stack direction="row" spacing={2}>
+                        <Avatar
+                          alt={row.fullname}
+                          src={row.photo || "/static/images/avatar/1.jpg"}
+                        />
+                        <Typography
+                          variant="caption"
+                          sx={{ display: "flex", flexDirection: "column" }}>
+                          <Typography variant="caption" fontWeight={500}>
+                            {row.fullname}
+                          </Typography>
+                          <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                            Updated: {moment(row.updatedAt).fromNow()}
+                          </Typography>
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="left">
                       <Typography
                         variant="caption"
                         sx={{ display: "flex", flexDirection: "column" }}>
                         <Typography variant="caption" fontWeight={500}>
-                          {row.fullname}
+                          {row.email || ""}
                         </Typography>
                         <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                          Updated: {moment(row.updatedAt).fromNow()}
+                          {row.phone || ""}
                         </Typography>
                       </Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography
-                      variant="caption"
-                      sx={{ display: "flex", flexDirection: "column" }}>
+                    </TableCell>
+                    <TableCell align="left">
                       <Typography variant="caption" fontWeight={500}>
-                        {row.email || ""}
+                        {row.birthday &&
+                          moment(row.birthday).format("MMMM D, YYYY")}
                       </Typography>
-                      <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                        {row.phone || ""}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "flex", flexDirection: "column" }}>
+                        <Typography variant="caption" fontWeight={500}>
+                          {moment(row.createdAt).format("MMMM D, YYYY")}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                          {moment(row.createdAt).format("h:mm A")}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography variant="caption" fontWeight={500}>
-                      {row.birthday &&
-                        moment(row.birthday).format("MMMM D, YYYY")}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography
-                      variant="caption"
-                      sx={{ display: "flex", flexDirection: "column" }}>
-                      <Typography variant="caption" fontWeight={500}>
-                        {moment(row.createdAt).format("MMMM D, YYYY")}
-                      </Typography>
-                      <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                        {moment(row.createdAt).format("h:mm A")}
-                      </Typography>
-                    </Typography>
-                  </TableCell>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 53 * emptyRows,
+                  }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
-              );
-            })}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: 53 * emptyRows,
-                }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
+    </Card>
   );
 }

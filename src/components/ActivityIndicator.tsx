@@ -1,6 +1,8 @@
 import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { hexToRgba } from "../utils/helpers";
+import { colors } from "../utils/colors";
 
 interface ActivityIndicatorProps {
   size?: number;
@@ -27,7 +29,7 @@ const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({
         top: 0,
         left: 0,
         backgroundColor: fullScreen
-          ? "rgba(255, 255, 255, 0.7)"
+          ? hexToRgba(colors.dark.background.default, 0.7)
           : "transparent",
         zIndex: fullScreen ? 1300 : "auto", // Full-screen mode brings it on top of other content
       }}>

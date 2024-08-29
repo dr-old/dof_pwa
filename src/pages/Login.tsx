@@ -9,7 +9,6 @@ import { login } from "../services/userService";
 import LayoutAuth from "../components/LayoutAuth";
 import ToggleTheme from "../components/ToggleTheme";
 import { useSnackbar } from "notistack";
-import ActivityIndicator from "../components/ActivityIndicator";
 
 interface FormValues {
   email: string;
@@ -52,10 +51,8 @@ const Login: React.FC = () => {
     mutation.mutate(data);
   };
 
-  if (isLoading) return <ActivityIndicator fullScreen={true} />;
-
   return (
-    <LayoutAuth>
+    <LayoutAuth loading={isLoading}>
       <Grid container spacing={2} sx={{ height: "100%" }}>
         {/* Column 1: Full-Height Image */}
         <Grid

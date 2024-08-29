@@ -1,126 +1,70 @@
-import {
-  Box,
-  Container,
-  Drawer,
-  IconButton,
-  styled,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import React from "react";
-import AppBar from "./AppBar";
-import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { Outlet } from "react-router-dom";
 import ListMenu from "./ListMenu";
+import AppBar from "./AppBar";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/system";
 
-const drawerWidth = 240;
+// import { AuthGuard } from '@/components/auth/auth-guard';
+// import { MainNav } from '@/components/dashboard/layout/main-nav';
+// import { SideNav } from '@/components/dashboard/layout/side-nav';
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-start",
-}));
+interface LayoutProps {
+  children: React.ReactNode;
+}
 
-const Layout: React.FC = () => {
+export default function Layout(): React.JSX.Element {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false); // Controls the menu slide-in/slide-out
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
   };
 
   return (
-    <Container
-      sx={{
-        maxWidth: { xs: "100%", sm: "90%", md: "100%" },
-        background: theme.palette.primary.main,
-      }}>
+    <React.Fragment>
       <Box
         sx={{
-          height: "auto",
-          paddingX: { xs: 1, sm: 2 }, // Responsive padding inside the box
-          paddingY: { xs: 2, sm: 3 }, // Responsive padding inside the box
+          bgcolor: "var(--mui-palette-background-paper)",
+          // bgcolor: theme.palette.primary.main,
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          position: "relative",
+          minHeight: "100%",
         }}>
         <Box
           sx={{
             display: "flex",
-            borderRadius: theme.shape.borderRadius * 2.5,
-            backgroundColor: theme.palette.background.default,
+            flex: "1 1 auto",
+            flexDirection: "column",
+            // pl: { lg: "var(--SideNav-width)" },
+            borderRadius: theme.shape.borderRadius * 2,
+            backgroundColor: theme.palette.background.darker,
+            mx: { xs: 1, sm: 2, md: 3, lg: 4 },
+            my: { xs: 1, sm: 2, md: 3, lg: 4 },
+            p: { xs: 1, sm: 2, md: 3, lg: 4 },
           }}>
-          {/* Main Content and Side Menu */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              borderRightColor: theme.palette.divider,
-              borderRightWidth: 1,
-              flex: 1,
-              padding: 1, // Responsive padding inside the box
-            }}>
-            {/* Header */}
-            <AppBar
-              setOpen={handleDrawerOpen}
-              open={open}
-              isMobile={isMobile}
-            />
-
-            {/* Content Area */}
-            <Box
-              sx={{
-                paddingX: { xs: 2, sm: 3, md: 4 },
-                paddingY: { xs: 3, sm: 3, md: 4 },
-              }}>
+          {/* Header */}
+          <AppBar
+            isMenuOpen={isMenuOpen}
+            toggleMenu={toggleMenu}
+            isMobile={isMobile}
+          />
+          <main>
+            <Container maxWidth="xl" sx={{ py: "64px" }}>
               <Outlet />
-            </Box>
-          </Box>
-
-          {/* Side Menu */}
-          {isMobile ? (
-            <Drawer
-              sx={{
-                // width: drawerWidth,
-                flexShrink: 0,
-                "& .MuiDrawer-paper": {
-                  width: drawerWidth,
-                  backgroundColor: theme.palette.background.default,
-                },
-              }}
-              variant="persistent"
-              anchor="right"
-              open={open}>
-              <DrawerHeader>
-                <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === "rtl" ? (
-                    <ChevronLeftRounded fontSize="small" />
-                  ) : (
-                    <ChevronRightRounded fontSize="small" />
-                  )}
-                </IconButton>
-              </DrawerHeader>
-              <ListMenu />
-            </Drawer>
-          ) : (
-            <Box
-              sx={{
-                height: "100vh",
-                overflowY: "auto",
-                width: drawerWidth,
-                padding: 1, // Responsive padding inside the box
-              }}>
-              <ListMenu />
-            </Box>
-          )}
+            </Container>
+          </main>
         </Box>
+        <ListMenu
+          isMenuOpen={isMenuOpen}
+          toggleMenu={toggleMenu}
+          isMobile={isMobile}
+        />
       </Box>
-    </Container>
+    </React.Fragment>
   );
-};
-
-export default Layout;
+}

@@ -17,8 +17,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "50%",
-  bgcolor: "background.default",
+  bgcolor: "background.darker",
   boxShadow: 24,
   p: 4,
   borderRadius: 5,
@@ -106,7 +105,11 @@ export default function ModalForm({
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Box sx={style}>
+        <Box
+          sx={[
+            style,
+            { width: { xs: "85%", sm: "75%", md: "65%", lg: "55%" } },
+          ]}>
           <Typography
             id="modal-modal-title"
             variant="h6"
