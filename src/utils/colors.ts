@@ -10,8 +10,9 @@ export const colors = {
       main: "#edf2ff",
     },
     background: {
+      paper: "#ffffff",
       default: "#ffffff",
-      paper: "#f4f6f8",
+      darker: "#f4f6f8",
     },
     text: {
       primary: "#242529",
@@ -29,7 +30,8 @@ export const colors = {
       main: "#dcdcdd",
     },
     background: {
-      default: "#242529",
+      default: "#0f1214",
+      darker: "#242529",
       paper: "#36373e",
     },
     text: {

@@ -70,16 +70,16 @@ const BorderlessTextField = styled(TextField)(({ theme }) => ({
 }));
 
 interface AppBarProps {
-  open?: boolean;
-  setOpen?: () => void;
+  isMenuOpen?: boolean;
+  toggleMenu?: () => void;
   isMobile?: boolean;
 }
 
-const AppBar = ({ open, setOpen, isMobile }: AppBarProps) => {
+const AppBar = ({ isMenuOpen, toggleMenu, isMobile }: AppBarProps) => {
   const { state } = useLocation();
 
   return (
-    <Header open={open} sx={{ backgroundColor: "transparent" }}>
+    <Header sx={{ backgroundColor: "transparent" }}>
       <Toolbar>
         <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
           {state.title}
@@ -105,8 +105,8 @@ const AppBar = ({ open, setOpen, isMobile }: AppBarProps) => {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={setOpen}
-            sx={{ ...(open && { display: "none" }), marginLeft: 1 }}>
+            onClick={toggleMenu}
+            sx={{ marginLeft: 1 }}>
             <MenuOpenRounded fontSize="small" />
           </OutlinedIconButton>
         )}

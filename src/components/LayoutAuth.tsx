@@ -1,35 +1,35 @@
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 import React, { ReactNode } from "react";
+import ActivityIndicator from "./ActivityIndicator";
 
 interface LoginProps {
   children: ReactNode;
+  loading?: boolean;
 }
 
-const LayoutAuth: React.FC<LoginProps> = ({ children }) => {
+const LayoutAuth: React.FC<LoginProps> = ({ children, loading }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Container
-      sx={{
-        maxWidth: { xs: "100%", sm: "90%", md: "100%" },
-      }}>
+    <React.Fragment>
+      {loading && <ActivityIndicator fullScreen={true} />}
       <Box
         sx={{
-          height: "100vh",
-          paddingX: { xs: 1, sm: 2 }, // Responsive padding inside the box
-          paddingY: { xs: 2, sm: 3 }, // Responsive padding inside the box
+          height: isMobile ? "100%" : "100vh",
+          padding: { xs: 1, sm: 2, md: 3, lg: 4 }, // Responsive padding inside the box
         }}>
         <Box
           sx={{
             height: "100%",
-            padding: { xs: 2, sm: 3 }, // Responsive padding inside the box
+            padding: { xs: 3, sm: 2, md: 3, lg: 4 }, // Responsive padding inside the box
             borderRadius: theme.shape.borderRadius * 2.5,
             backgroundColor: theme.palette.primary.main,
           }}>
-          {children}
+          <Container maxWidth="xl">{children}</Container>
         </Box>
       </Box>
-    </Container>
+    </React.Fragment>
   );
 };
 
