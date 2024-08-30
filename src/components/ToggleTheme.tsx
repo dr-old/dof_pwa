@@ -1,3 +1,4 @@
+// src/components/ToggleTheme.tsx
 import { useColorMode } from "../context/useColorMode";
 import { Brightness4Rounded, Brightness7Rounded } from "@mui/icons-material";
 import { Box, Button, Typography, useTheme } from "@mui/material";
@@ -26,6 +27,7 @@ const ToggleTheme: React.FC<ToggleThemeProps> = ({ reverseColor = false }) => {
       startIcon={
         theme.palette.mode === "light" && (
           <Box
+            data-testid="brightness4-icon"
             sx={{
               backgroundColor,
               color,
@@ -43,6 +45,7 @@ const ToggleTheme: React.FC<ToggleThemeProps> = ({ reverseColor = false }) => {
       endIcon={
         theme.palette.mode === "dark" && (
           <Box
+            data-testid="brightness7-icon"
             sx={{
               backgroundColor,
               color,

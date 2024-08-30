@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-e1lug"
+  >
+    <div
+      class="MuiBox-root css-1pm0dtq"
+    >
+      <div
+        data-testid="app-bar"
+      >
+        <button>
+          Toggle Menu
+        </button>
+        <span>
+          Menu Closed
+        </span>
+        <span>
+          Desktop View
+        </span>
+      </div>
+      <main>
+        <div
+          class="MuiContainer-root MuiContainer-maxWidthLg css-qhibcd-MuiContainer-root"
+        >
+          <div
+            data-testid="outlet"
+          >
+            Outlet Content
+          </div>
+        </div>
+      </main>
+    </div>
+    <div
+      data-testid="list-menu"
+    >
+      <span>
+        Menu Hidden
+      </span>
+      <span>
+        Desktop Menu
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;

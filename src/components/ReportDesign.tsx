@@ -6,12 +6,6 @@ interface ArcDesignProps {
   title?: string;
 }
 
-interface DetailProps {
-  backgroundColor?: string;
-  title?: string;
-  value?: string;
-}
-
 export default function ReportDesign({
   backgroundColor,
   title,

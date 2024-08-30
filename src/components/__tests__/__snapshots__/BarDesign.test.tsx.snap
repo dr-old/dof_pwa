@@ -1,0 +1,456 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BarDesign Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-xh4prz"
+  >
+    <div
+      class="MuiBox-root css-girdtc"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle1 css-5amadx-MuiTypography-root"
+      >
+        Snapshot Title
+      </h6>
+    </div>
+    <div
+      class="MuiBox-root css-1vza37y"
+    >
+      <div
+        class="css-1sunrpn-MuiResponsiveChart-container"
+        data-testid="bar-chart"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="250"
+          viewBox="0 0 500 250"
+          width="500"
+        >
+          <title />
+          <desc />
+          <defs>
+            <lineargradient
+              gradientUnits="userSpaceOnUse"
+              id=":r5:-gradient-x-defaultized-x-axis-0"
+              x1="0"
+              x2="500px"
+              y1="0"
+              y2="0"
+            />
+          </defs>
+          <g
+            clip-path="url(#:r4:-clip-path)"
+          >
+            <clippath
+              id=":r5:_auto-generated-id-0_0_0"
+            >
+              <rect
+                style="height: 36px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(55.71428571428572px,164px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_1"
+            >
+              <rect
+                style="height: 21px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(112.85714285714286px,179px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_2"
+            >
+              <rect
+                style="height: 147px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(170px,53px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_3"
+            >
+              <rect
+                style="height: 59px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(227.14285714285717px,141px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_4"
+            >
+              <rect
+                style="height: 72px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(284.28571428571433px,128px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_5"
+            >
+              <rect
+                style="height: 57px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(341.42857142857144px,143px,0);"
+              />
+            </clippath>
+            <clippath
+              id=":r5:_auto-generated-id-0_0_6"
+            >
+              <rect
+                style="height: 64px; width: 45.71428571428572px; clip-path: inset(0px round 10px 10px 0px 0px); transform: translate3d(398.5714285714286px,136px,0);"
+              />
+            </clippath>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_0)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 36px; width: 45.71428571428572px; transform: translate3d(55.71428571428572px,164px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_1)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 21px; width: 45.71428571428572px; transform: translate3d(112.85714285714286px,179px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_2)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 147px; width: 45.71428571428572px; transform: translate3d(170px,53px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_3)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 59px; width: 45.71428571428572px; transform: translate3d(227.14285714285717px,141px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_4)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 72px; width: 45.71428571428572px; transform: translate3d(284.28571428571433px,128px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_5)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 57px; width: 45.71428571428572px; transform: translate3d(341.42857142857144px,143px,0);"
+              />
+            </g>
+            <g
+              clip-path="url(#:r5:_auto-generated-id-0_0_6)"
+            >
+              <rect
+                class="MuiBarElement-root MuiBarElement-series-auto-generated-id-0 css-szp4sa-MuiBarElement-root"
+                cursor="pointer"
+                style="height: 64px; width: 45.71428571428572px; transform: translate3d(398.5714285714286px,136px,0);"
+              />
+            </g>
+          </g>
+          <g
+            class="MuiChartsAxis-root MuiChartsAxis-directionX MuiChartsAxis-bottom css-1k2u9zb-MuiChartsAxis-root"
+            transform="translate(0, 200)"
+          >
+            <line
+              class="MuiChartsAxis-line"
+              x1="50"
+              x2="450"
+            />
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(50.000000000000014, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page A
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(107.14285714285715, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page B
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(164.28571428571428, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page C
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(221.42857142857144, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page D
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(278.5714285714286, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page E
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(335.7142857142857, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page F
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(392.8571428571429, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="hanging"
+                style="font-size: 12px;"
+                text-anchor="middle"
+                x="28.571428571428573"
+                y="9"
+              >
+                <tspan
+                  dominant-baseline="hanging"
+                  dy="0px"
+                  x="28.571428571428573"
+                >
+                  Page G
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(450, 0)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                y2="6"
+              />
+            </g>
+          </g>
+          <g
+            class="MuiChartsAxis-root MuiChartsAxis-directionY MuiChartsAxis-left css-1k2u9zb-MuiChartsAxis-root"
+            transform="translate(50, 0)"
+          >
+            <line
+              class="MuiChartsAxis-line"
+              stroke-linecap="square"
+              y1="50"
+              y2="200"
+            />
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(0, 200)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                x2="-6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="central"
+                style="font-size: 12px;"
+                text-anchor="end"
+                x="-8"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="-8"
+                >
+                  0
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(0, 125)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                x2="-6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="central"
+                style="font-size: 12px;"
+                text-anchor="end"
+                x="-8"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="-8"
+                >
+                  5,000
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsAxis-tickContainer"
+              transform="translate(0, 50)"
+            >
+              <line
+                class="MuiChartsAxis-tick"
+                x2="-6"
+              />
+              <text
+                class="MuiChartsAxis-tickLabel"
+                dominant-baseline="central"
+                style="font-size: 12px;"
+                text-anchor="end"
+                x="-8"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="-8"
+                >
+                  10,000
+                </tspan>
+              </text>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-row css-1u0lry5-MuiChartsLegend-root"
+          />
+          <clippath
+            id=":r4:-clip-path"
+          >
+            <rect
+              height="150"
+              width="400"
+              x="50"
+              y="50"
+            />
+          </clippath>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
