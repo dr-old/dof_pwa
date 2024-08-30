@@ -43,6 +43,17 @@ Or if you are using npm:
 npm start
 ```
 
+### Run testing the Project
+
+To start the project, run:
+```sh
+yarn test
+```
+Or if you are using npm:
+```sh
+npm test
+```
+
 ### Login Authentication
 
 - email: danni@example.com
