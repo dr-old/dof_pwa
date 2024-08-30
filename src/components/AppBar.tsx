@@ -1,5 +1,6 @@
 import { hexToRgba } from "../utils/helpers";
 import {
+  CloseRounded,
   MenuOpenRounded,
   NotificationsOutlined,
   SearchRounded,
@@ -8,6 +9,7 @@ import { Box, IconButton, Toolbar, Typography } from "@mui/material";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 interface HeaderProps extends MuiAppBarProps {
@@ -77,26 +79,51 @@ interface AppBarProps {
 
 const AppBar = ({ isMenuOpen, toggleMenu, isMobile }: AppBarProps) => {
   const { state } = useLocation();
+  const [openSearch, setOpenSearch] = useState(false);
 
   return (
     <Header sx={{ backgroundColor: "transparent" }}>
       <Toolbar>
-        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-          {state.title}
-        </Typography>
-        <BorderlessTextField
-          variant="outlined"
-          size="small"
-          placeholder="Search something..."
-          InputProps={{
-            startAdornment: (
-              <IconButton>
-                <SearchRounded fontSize="small" />
-              </IconButton>
-            ),
-          }}
-          sx={{ mx: 2 }}
-        />
+        {((isMobile && !openSearch) || !isMobile) && (
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+            {state.title}
+          </Typography>
+        )}
+        {((isMobile && openSearch) || !isMobile) && (
+          <BorderlessTextField
+            variant="outlined"
+            size="small"
+            placeholder="Search something..."
+            InputProps={{
+              startAdornment: (
+                <IconButton>
+                  <SearchRounded fontSize="small" />
+                </IconButton>
+              ),
+            }}
+            sx={{ mx: 2, width: isMobile ? "100%" : "auto" }}
+          />
+        )}
+        {isMobile && !openSearch && (
+          <OutlinedIconButton
+            color="inherit"
+            aria-label="open search"
+            edge="start"
+            onClick={() => setOpenSearch(!openSearch)}
+            sx={{ marginRight: 1 }}>
+            <SearchRounded fontSize="small" />
+          </OutlinedIconButton>
+        )}
+        {isMobile && openSearch && (
+          <IconButton
+            color="inherit"
+            aria-label="close search"
+            edge="start"
+            onClick={() => setOpenSearch(!openSearch)}
+            sx={{ marginRight: 1 }}>
+            <CloseRounded fontSize="small" />
+          </IconButton>
+        )}
         <OutlinedIconButton color="inherit">
           <NotificationsOutlined fontSize="small" />
         </OutlinedIconButton>

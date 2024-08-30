@@ -41,7 +41,9 @@ const Detail = ({ backgroundColor, title, value }: DetailProps) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+        component="div" // Render as div to avoid <div> inside <p>
+      >
         <Box
           sx={{
             width: 12,
@@ -53,7 +55,9 @@ const Detail = ({ backgroundColor, title, value }: DetailProps) => {
         />
         {title}
       </Typography>
-      <Typography variant="body2" sx={{ color }}>
+      <Typography variant="body2" sx={{ color }} component="div">
+        {" "}
+        {/* Render as div */}
         {value}
       </Typography>
     </Box>
@@ -93,7 +97,7 @@ export default function ArcDesign({ backgroundColor, title }: ArcDesignProps) {
         <Typography variant="subtitle1" fontWeight={600} sx={{ color }}>
           {title}
         </Typography>
-        <Typography variant="subtitle2" sx={{ color: colorPaper }}>
+        <Typography variant="caption" sx={{ color: colorPaper }}>
           More
         </Typography>
       </Box>
@@ -106,7 +110,7 @@ export default function ArcDesign({ backgroundColor, title }: ArcDesignProps) {
         }}>
         <Gauge
           {...settings}
-          cornerRadius="50%"
+          cornerRadius="50%" // Ensure Gauge handles this prop correctly
           text={({ value }) => `${value}K`}
           sx={(theme) => ({
             [`& .${gaugeClasses.valueText} text`]: {

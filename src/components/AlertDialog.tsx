@@ -23,8 +23,8 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
   title,
   content,
   onConfirm,
-  confirmText = "Agree",
-  cancelText = "Disagree",
+  confirmText,
+  cancelText,
 }) => {
   const theme = useTheme();
 

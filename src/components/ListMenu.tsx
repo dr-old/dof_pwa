@@ -27,7 +27,7 @@ import AlertDialog from "./AlertDialog";
 
 // Styled component for the ListItemButton to make it rounded
 const RoundedListItemButton = styled(ListItemButton)(({ theme }) => ({
-  borderRadius: theme.shape.borderRadius * 2.5,
+  borderRadius: theme.shape.borderRadius * 3,
   transition: "background-color 0.3s ease",
   "&:hover": {
     opacity: 1,
@@ -47,7 +47,7 @@ const ListMenu: React.FC<ListMenuProps> = ({
   toggleMenu,
 }) => {
   const { state } = useLocation();
-  const { logOut } = useAuth();
+  const { logOut, user } = useAuth();
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false); // Controls the AlertDialog
@@ -110,11 +110,13 @@ const ListMenu: React.FC<ListMenuProps> = ({
         sx={[
           {
             height: "100%",
-            width: "250px",
+            minWidth: "250px",
+            px: 2,
             backgroundColor: theme.palette.background.default,
           },
           isMobile
             ? {
+                pb: 2,
                 position: "fixed",
                 top: 0,
                 right: 0, // Changed from left to right
@@ -122,6 +124,7 @@ const ListMenu: React.FC<ListMenuProps> = ({
                 transition: "transform 0.3s ease-in-out",
                 boxShadow: isMenuOpen ? theme.shadows[5] : "none",
                 zIndex: 1200, // Ensure it stays on top
+                overflowX: "auto",
               }
             : {
                 my: { xs: 1, sm: 2, md: 3, lg: 4 },
@@ -146,16 +149,16 @@ const ListMenu: React.FC<ListMenuProps> = ({
               theme.palette.mode === "dark" ? "warning.main" : "primary.main"
             }
             fontWeight={600}
-            sx={{ mb: 5, mt: 2 }}>
+            sx={{ mb: 3, mt: 2 }}>
             DOF
           </Typography>
           <Avatar
-            src="https://i.pravatar.cc/150?img=2" // Replace with actual image URL
-            alt="User Image"
+            src={user?.photo || "https://i.pravatar.cc/150?img=2"}
+            alt={user?.fullname}
             sx={{ width: 80, height: 80, marginBottom: 2 }}
           />
           <Typography variant="caption" sx={{ mb: 1 }}>
-            Danni Ramdan
+            {user?.fullname}
           </Typography>
           {/* Replace with actual name */}
           <Button
@@ -179,6 +182,7 @@ const ListMenu: React.FC<ListMenuProps> = ({
             <ListItem key={index}>
               <RoundedListItemButton
                 sx={{
+                  py: 2,
                   opacity: item.title === state.title ? 1 : 0.6,
                   backgroundColor:
                     item.title === state.title

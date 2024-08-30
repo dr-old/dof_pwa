@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LayoutAuth Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-8k0fxg"
+  >
+    <div
+      class="MuiBox-root css-144j783"
+    >
+      <div
+        class="MuiContainer-root MuiContainer-maxWidthXl css-19r6kue-MuiContainer-root"
+      >
+        <div>
+          Test Child
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
